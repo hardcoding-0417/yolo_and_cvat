@@ -1,0 +1,12 @@
+path: ./datasets
+train: train
+val: val
+test: test
+
+nc: 5
+names:
+  0: LC1
+  1: SC1
+  2: W1
+  3: PB1
+  4: PW1
