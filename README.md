@@ -7,6 +7,14 @@ YOLO를 사용해 실제로 모델을 만들어볼 수 있도록 지원하는
 
 천천히 하나 씩 따라해보세요.
 
+## 1. 라이브러리 설치
+```bash
+pip install opencv-python ultralytics
+```
+1. ultralytics: YOLO를 지원하는 라이브러리.
+2. opencv: 이미지와 동영상을 조작하기 위해 필요합니다.
+
+
 ## 2. 데이터셋 준비
 
 1. 특정 객체에 대한 이미지를 수집합니다.
