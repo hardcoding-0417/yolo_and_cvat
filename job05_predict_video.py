@@ -9,7 +9,7 @@ video_source = '추론할 영상의 경로'
 cap = cv2.VideoCapture(video_source)
 
 # 출력 영상 설정
-output_path = './output.mp4'
+output_path = './output.mp4' # 출력폴더의 경로
 os.makedirs(output_path, exsit_ok=False)
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 비디오 코덱 설정
