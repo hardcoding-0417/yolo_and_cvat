@@ -1,10 +1,15 @@
+
+# path는 데이터셋의 폴더 경로를 주면 됩니다.
+# train에는 train할 데이터가 들어있는 폴더의 이름이 무엇인지를 적으면 됩니다.
+# 나머지도 마찬가지로 합니다.
+
 path: ./datasets
 train: train
 val: val
 test: test
 
-nc: 5
-names:
+nc: 5   # 카테고리의 개수. 개와 고양이를 분류한다면 2로 합니다.
+names:  # names에는 각 카테고리의 이름과 인덱스를 적어줍니다.
   0: LC1
   1: SC1
   2: W1

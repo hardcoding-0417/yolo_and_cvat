@@ -1,6 +1,9 @@
 import json
 import os
 
+# YOLO 1.0로 export할 때 오류가 났을 경우 사용하는 코드.
+# YOLO 1.1로 export할 수 있다면 생략하세요.
+
 def convert_coco_to_yolo(json_file, images_dir, labels_dir, class_mapping):
     # 입력 파일 및 디렉토리 유효성 검사
     if not os.path.isfile(json_file):

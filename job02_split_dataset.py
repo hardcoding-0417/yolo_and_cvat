@@ -1,44 +1,46 @@
 import os
-import random
 import shutil
+import random
 
-def split_dataset(dataset_dir, output_dir, train_ratio, val_ratio, test_ratio):
-    assert train_ratio + val_ratio + test_ratio == 1.0
+# 경로 설정
+data_path = '내가 사용할 데이터셋의 경로'
+images = [f for f in os.listdir(data_path) if f.endswith('.jpg', '.png')] # jpeg도 쓰고 싶다면 jpeg도 추가해줍니다.
 
-    images_dir = os.path.join(dataset_dir, 'images')
-    labels_dir = os.path.join(dataset_dir, 'labels')
+# 전체 이미지 목록을 섞음
+random.shuffle(images)
 
-    subsets = ['train', 'val', 'test']
-    for subset in subsets:
-        os.makedirs(os.path.join(output_dir, 'images', subset), exist_ok=True)
-        os.makedirs(os.path.join(output_dir, 'labels', subset), exist_ok=True)
+# 분할 비율 설정
+train_ratio = 0.8
+val_ratio = 0.1
+test_ratio = 0.1
 
-    image_files = os.listdir(images_dir)
-    random.shuffle(image_files)
+# 각 세트의 데이터 개수 계산
+total_images = len(images)
+train_count = int(total_images * train_ratio)
+val_count = int(total_images * val_ratio)
+test_count = total_images - train_count - val_count
 
-    train_size = int(len(image_files) * train_ratio)
-    val_size = int(len(image_files) * val_ratio)
+# 데이터셋 분할
+train_imgs = images[:train_count]
+val_imgs = images[train_count:train_count + val_count]
+test_imgs = images[train_count + val_count:]
 
-    train_images = image_files[:train_size]
-    val_images = image_files[train_size:train_size+val_size]
-    test_images = image_files[train_size+val_size:]
+# 디렉토리 생성
+os.makedirs('dataset/train/images', exist_ok=True)
+os.makedirs('dataset/train/labels', exist_ok=True)
+os.makedirs('dataset/val/images', exist_ok=True)
+os.makedirs('dataset/val/labels', exist_ok=True)
+os.makedirs('dataset/test/images', exist_ok=True)
+os.makedirs('dataset/test/labels', exist_ok=True)
 
-    for subset, subset_images in [('train', train_images), ('val', val_images), ('test', test_images)]:
-        for image_file in subset_images:
-            image_path = os.path.join(images_dir, image_file)
-            label_file = os.path.splitext(image_file)[0] + '.txt'
-            label_path = os.path.join(labels_dir, label_file)
+# 파일 이동 함수
+def copy_files(img_list, split):
+    for img in img_list:
+        label = img.replace('.jpg', '.txt')
+        shutil.copy(os.path.join(data_path, img), os.path.join(f'dataset/{split}/images', img))
+        shutil.copy(os.path.join(data_path, label), os.path.join(f'dataset/{split}/labels', label))
 
-            shutil.copy(image_path, os.path.join(output_dir, 'images', subset))
-            shutil.copy(label_path, os.path.join(output_dir, 'labels', subset))
-
-    print(f"{output_dir} 폴더가 생성됐습니다.")
-
-if __name__ == "__main__":
-    dataset_dir = '데이터셋 경로'
-    output_dir = 'train, val, test로 나누어진 데이터셋 폴더들이 출력될 경로'
-    train_ratio = 0.8
-    val_ratio = 0.1
-    test_ratio = 0.1
-
-    split_dataset(dataset_dir, output_dir, train_ratio, val_ratio, test_ratio)
+# 파일 이동
+copy_files(train_imgs, 'train')
+copy_files(val_imgs, 'val')
+copy_files(test_imgs, 'test')
